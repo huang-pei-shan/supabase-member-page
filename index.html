@@ -19,13 +19,12 @@
   const SUPABASE_URL = "https://ujfkovzdxpfxdqnyyqrw.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZmtvdnpkeHBmeGRxbnl5cXJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDgyNTgsImV4cCI6MjA3OTg4NDI1OH0.Hp4_Z4SOffExwf6fNKpZn3WbPAYhGwQvluzZzCYbxV8";
 
-  // 🚀🚀 請注意：不要用 "supabase" 當變數名！
-  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   async function loadMembers() {
     const listDiv = document.getElementById("memberList");
 
-    const { data, error } = await client
+    const { data, error } = await supabaseClient
       .from("TblMember")
       .select("MemberName");
 
@@ -45,5 +44,6 @@
 
   loadMembers();
 </script>
+
 </body>
 </html>
