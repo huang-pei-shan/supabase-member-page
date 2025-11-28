@@ -24,26 +24,36 @@
   async function loadMembers() {
     const listDiv = document.getElementById("memberList");
 
+    // 讀取資料
     const { data, error } = await supabaseClient
       .from("TblMember")
-      .select("MemberName");
+      .select("MemberID, MemberName"); // 加上 MemberID 方便 debug
+
+    // 🔹 Debug：印出回傳的資料和錯誤
+    console.log("Supabase data:", data);
+    console.log("Supabase error:", error);
 
     if (error) {
       listDiv.innerHTML = "讀取失敗：" + error.message;
       return;
     }
 
+    if (!data || data.length === 0) {
+      listDiv.innerHTML = "目前沒有會員資料。";
+      return;
+    }
+
+    // 顯示會員名稱
     listDiv.innerHTML = "";
     data.forEach(row => {
       const div = document.createElement("div");
       div.className = "item";
-      div.textContent = row.MemberName;
+      div.textContent = `${row.MemberID} - ${row.MemberName}`; // 加上 MemberID 方便檢查
       listDiv.appendChild(div);
     });
   }
 
   loadMembers();
 </script>
-
 </body>
 </html>
