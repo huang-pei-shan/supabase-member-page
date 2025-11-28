@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>Supabase 會員列表</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    h1 { color: #333; }
+    .name-list { margin-top: 20px; }
+    .item { padding: 6px 0; border-bottom: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <h1>會員列表</h1>
+  <div id="memberList" class="name-list">讀取中...</div>
+
+  <script>
+    // 替換成你的 Supabase API 設定
+    const SUPABASE_URL = "https://ujfkovzdxpfxdqnyyqrw.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqZmtvdnpkeHBmeGRxbnl5cXJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDgyNTgsImV4cCI6MjA3OTg4NDI1OH0.Hp4_Z4SOffExwf6fNKpZn3WbPAYhGwQvluzZzCYbxV8";
+
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function loadMembers() {
+      const listDiv = document.getElementById("memberList");
+
+      const { data, error } = await supabase
+        .from("TblMember")
+        .select("MemberName");
+
+      if (error) {
+        listDiv.innerHTML = "讀取失敗：" + error.message;
+        return;
+      }
+
+      if (data.length === 0) {
+        listDiv.innerHTML = "目前沒有會員資料。";
+        return;
+      }
+
+      listDiv.innerHTML = ""; 
+      data.forEach(row => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.textContent = row.MemberName;
+        listDiv.appendChild(div);
+      });
+    }
+
+    loadMembers();
+  </script>
+</body>
+</html>
